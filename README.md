@@ -1,2 +1,2 @@
 # lotus-planner
-The casual planning tool for non-planners.
+A casual planning app for non-planners.
