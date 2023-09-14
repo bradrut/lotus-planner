@@ -2,3 +2,7 @@
 <div>
   <p>This is where the core Lotus Planner will live</p>
 </div>
+
+<style lang="postcss">
+
+</style>
