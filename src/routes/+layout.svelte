@@ -1,14 +1,32 @@
 <script>
   import "../app.css";
 
-  const navLinks = [
-    { "href": "/", "linkText": "Lotus Planner" },
-    { "href": "/about", "linkText": "About" }
+  let navLinks = [
+    { href: "/", linkText: "Lotus Planner", active: true },
+    { href: "/about", linkText: "About", active: false }
   ];
   let drawerOpen = false;
 
-  function onNav() {
-    drawerOpen = false;
+  /**
+   * @param {{ href: string; linkText: string; active: boolean; }} clickedLink
+   */
+  function onNav(clickedLink) {
+    let activeLink = getActiveLink();
+
+    if (clickedLink.href !== activeLink.href) {
+      activeLink.active = false;
+      clickedLink.active = true;
+      // https://learn.svelte.dev/tutorial/updating-arrays-and-objects
+      navLinks = navLinks;
+      
+      drawerOpen = false;
+    }
+  }
+
+  function getActiveLink() {
+    let activeLink = navLinks.find(link => { return link.active });
+    if (!activeLink) throw new Error('Could not find active drawer link');
+    return activeLink;
   }
 </script>
 
@@ -23,13 +41,18 @@
       </label>
     </div>
     <slot />
-  </div> 
+  </div>
   <div class="drawer-side">
     <label for="nav-drawer" class="drawer-overlay"></label>
-    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+    <ul class="menu pt-4 pl-0 pr-0 w-80 min-h-full bg-base-200 text-base-content">
       {#each navLinks as link}
         <li>
-          <a href={link.href} on:click={onNav}>{link.linkText}</a>
+          <a href={link.href}
+            class="{"active"} rounded-none pt-3.5 pl-6 h-12"
+            class:active={link.active}
+            on:click={() => onNav(link)}>
+              {link.linkText}
+          </a>
         </li>
       {/each}
     </ul>
